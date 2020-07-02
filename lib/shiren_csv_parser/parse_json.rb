@@ -14,11 +14,19 @@ module ShirenCsvParser
       CSV.read(file, headers: true)
     end
 
-    def parse_json
+    def parse_hash
       CSV.foreach(file, headers: true) do |row|
         item = build_struct(row)
 
         data << item.to_h
+      end
+    end
+
+    def write_file
+      file_path = "./item_list.json"
+
+      File.open(file_path, "w") do |file|
+        file.puts data.to_json
       end
     end
 
@@ -38,8 +46,12 @@ module ShirenCsvParser
       end
 
       # TODO: google_spreadsheet で取得可能にしたい
-      def dummy_csv
+      def oepn_csv
         File.open("spec/dummy_files/google_spreadsheet.csv")
+      end
+
+      def open_json
+        File.open("item_list.json")
       end
   end
 end
